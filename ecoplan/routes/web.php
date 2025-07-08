@@ -10,19 +10,24 @@ use Illuminate\Support\Facades\Route;
 
 // Guest routes
 Route::middleware('guest')->group(function () {
-    Route::get('/', function () {
-        return view('auth.login');
-    })->name('login');
-    
-    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-    Route::post('/register', [AuthController::class, 'register'])->name('register');
+    // --- Registrasi ---
+    // Menampilkan halaman registrasi
+    Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+    // Memproses data registrasi
+    Route::post('/register', [AuthController::class, 'register']);
+
+    // --- Login ---
+    // Menampilkan halaman login
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    // Memproses data login
+    Route::post('/login', [AuthController::class, 'login']);
 });
 
 // Protected routes
 Route::middleware(['auth'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/home', function() {
+    Route::get('/home', function () {
         return redirect()->route('dashboard');
     });
 
